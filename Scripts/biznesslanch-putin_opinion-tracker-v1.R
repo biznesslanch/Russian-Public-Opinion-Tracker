@@ -1,32 +1,19 @@
 # Load packages ----------------
-library(ggplot2)
-library(RColorBrewer)
-library(ggpubr)
-library(ggthemes)
 library(plotly)
 library(broom)
-library(extrafont)
-
-
-# set Working directory/load data --------------
-indir <- "C:/Users/bizne/OneDrive/Blog/Public opinion tracker/Data"
-plotdir <- "C:/Users/bizne/OneDrive/Blog/Public opinion tracker/Plots"
-tabdir <-  "C:/Users/bizne/OneDrive/Blog/Public opinion tracker/tables"
-
-setwd(indir)
 
 # load Levada data ----------------
-levada_data <- read.csv("putin-approval-levada-1999.csv", header = TRUE, stringsAsFactors = FALSE)
+levada_data <- read.csv("https://raw.githubusercontent.com/biznesslanch/Russian-Public-Opinion-Tracker/master/Data/putin-approval-levada-1999.csv",
+                        header = TRUE, stringsAsFactors = FALSE)
 names(levada_data)[1] <- "Date"
 names(levada_data)[4] <- "No_answer"
 levada_data$Date <- as.POSIXct(levada_data$Date, format = "%m/%d/%Y", origin = "1899-12-30")
 levada_data <- levada_data %>% select(Date, Approve, Disapprove) %>% filter(.,Date > "2012-03-05")
 levada_data$source <- "Levada"
 
-
 # load vciom data -------------------------------
-setwd(indir)
-vciom_data <- read.csv("vciom-presidential-approval-2006.csv", header = TRUE, stringsAsFactors = FALSE, encoding = "UTF-8")
+vciom_data <- read.csv("https://raw.githubusercontent.com/biznesslanch/Russian-Public-Opinion-Tracker/master/Data/vciom-presidential-approval-2006.csv",
+                       header = TRUE, stringsAsFactors = FALSE)
 colnames(vciom_data)[1] <- "Date"
 colnames(vciom_data)[2] <- "Approve"
 colnames(vciom_data)[3] <- "Disapprove"
@@ -35,7 +22,8 @@ vciom_data <- vciom_data %>% filter(.,Date > "2012-03-05")
 vciom_data$source <- "VTsIOM"
 
 # load fom data -------------------------------
-fom_data <- read.csv("putin-approval-fom.csv", header = TRUE, stringsAsFactors = FALSE, encoding = "UTF-8")
+fom_data <- read.csv("https://raw.githubusercontent.com/biznesslanch/Russian-Public-Opinion-Tracker/master/Data/putin-approval-fom.csv", 
+                     header = TRUE, stringsAsFactors = FALSE)
 colnames(fom_data)[1] <- "Date"
 colnames(fom_data)[2] <- "Approve"
 colnames(fom_data)[3] <- "Disapprove"
@@ -179,5 +167,6 @@ opinion_plot <- combined_data %>% na.omit() %>% plot_ly(., x= ~date_num, height 
   
 opinion_plot
 
+# note, this last line will not run w/o the API key
 api_create(opinion_plot, filename = "biznesslanch-ru_opinion-tracker-v1.1")
 
