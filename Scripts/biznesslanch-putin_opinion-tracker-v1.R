@@ -48,7 +48,7 @@ update_cap <- paste(update, tdy_date, sep=" ")
 axy <- list(title="Approval/Disapproval", hoverformat=".1f")
 axx <-  list(title="", type= "date",
              range=c(as.numeric(as.POSIXct("2012-03-05", format="%Y-%m-%d"))*1000,
-                     as.numeric(as.POSIXct("2018-07-31", format="%Y-%m-%d"))*1000),
+                     as.numeric(as.POSIXct(Sys.Date(), format="%Y-%m-%d"))*1000),
              spikemode="across", spikecolor="black", spikethickness=1, spikedash="solid",
              rangeselector = list(
                buttons = list(
