@@ -38,8 +38,8 @@ combined_data <- rbind(levada_data, vciom_data, fom_data)
 combined_data$date_num <- as.numeric(combined_data$Date)*1000
 
 # create shortcuts for plotly plot -------------------------
-m <- loess(Approve ~ date_num, span=0.2, data= combined_data)
-l <- loess(Disapprove ~ date_num, span=0.2, data= combined_data)
+m <- loess(Approve ~ date_num, span=0.1, data= combined_data)
+l <- loess(Disapprove ~ date_num, span=0.1, data= combined_data)
 tdy_date <- Sys.Date()
 tdy_date <- format(tdy_date, "%m/%d/%Y")
 update <- "Last updated:"
@@ -49,7 +49,7 @@ axy <- list(title="Approval/Disapproval", hoverformat=".1f")
 axx <-  list(title="", type= "date",
              range=c(as.numeric(as.POSIXct("2012-03-05", format="%Y-%m-%d"))*1000,
                      as.numeric(as.POSIXct(Sys.Date(), format="%Y-%m-%d"))*1000),
-             spikemode="across", spikecolor="black", spikethickness=1, spikedash="solid",
+             spikemode="across", spikecolor="black", spikethickness=1, spikedash="solid", spikesnap="cursor",
              rangeselector = list(
                buttons = list(
                  list(
@@ -82,13 +82,13 @@ opinion_plot <- combined_data %>% na.omit() %>% plot_ly(., x= ~date_num, height 
               hoverinfo = "none") %>%
   add_markers(y= ~Disapprove, showlegend=FALSE, color =I("red2"), alpha=0.2,
               hoverinfo = "none") %>% 
-  add_lines(y= ~fitted(loess(Approve ~ date_num, span=0.2)), showlegend=TRUE,
+  add_lines(y= ~fitted(loess(Approve ~ date_num, span=0.1)), showlegend=TRUE,
             line= list(color="rgb(58,95,205"),
             name="Approval",
             hoverinfo="text",
             text= ~paste("Date:", format(Date, "%m-%d-%Y"),
                          "<br>Approval:", round(m$fitted,1))) %>%
-  add_lines(y= ~fitted(loess(Disapprove ~ date_num, span=0.2)), showlegend=FALSE,
+  add_lines(y= ~fitted(loess(Disapprove ~ date_num, span=0.1)), showlegend=FALSE,
             line= list(color="red2"),
             name="Disapproval",
             hoverinfo="text",
@@ -120,6 +120,7 @@ opinion_plot <- combined_data %>% na.omit() %>% plot_ly(., x= ~date_num, height 
          hovermode="compare",
          hoverlabel=list(font=list(size=16)),
          spikedistance=-1,
+         hoverdistance=-1,
          annotations = list(
            list(xref = "paper", yref="paper", xanchor="middle", yanchor="middle",
                 x=0.325, y=1.025, showarrow=F, align="middle",
