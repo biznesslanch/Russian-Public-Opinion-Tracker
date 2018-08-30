@@ -5,8 +5,8 @@ library(broom)
 # load Levada data ----------------
 levada_data <- read.csv("https://raw.githubusercontent.com/biznesslanch/Russian-Public-Opinion-Tracker/master/Data/putin-approval-levada-1999.csv",
                         header = TRUE, stringsAsFactors = FALSE)
-names(levada_data)[1] <- "Date"
-names(levada_data)[4] <- "No_answer"
+colnames(levada_data)[1] <- "Date"
+colnames(levada_data)[4] <- "No_answer"
 levada_data$Date <- as.POSIXct(levada_data$Date, format = "%m/%d/%Y", origin = "1899-12-30")
 levada_data <- levada_data %>% select(Date, Approve, Disapprove) %>% filter(.,Date > "2012-03-05")
 levada_data$source <- "Levada"
