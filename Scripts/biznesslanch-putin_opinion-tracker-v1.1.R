@@ -2,37 +2,13 @@
 library(plotly)
 library(broom)
 
-# load Levada data ----------------
-levada_data <- read.csv("https://raw.githubusercontent.com/biznesslanch/Russian-Public-Opinion-Tracker/master/Data/putin-approval-levada-1999.csv",
-                        header = TRUE, stringsAsFactors = FALSE)
-colnames(levada_data)[1] <- "Date"
-colnames(levada_data)[4] <- "No_answer"
-levada_data$Date <- as.POSIXct(levada_data$Date, format = "%m/%d/%Y", origin = "1899-12-30")
-levada_data <- levada_data %>% select(Date, Approve, Disapprove) %>% filter(.,Date > "2012-03-05")
-levada_data$source <- "Levada"
+# load Data ---------------
+source("https://raw.githubusercontent.com/biznesslanch/Russian-Public-Opinion-Tracker/master/Scripts/biznesslanch-putin_opinion-get_data.R",
+       encoding = "UTF-8")
 
-# load vciom data -------------------------------
-vciom_data <- read.csv("https://raw.githubusercontent.com/biznesslanch/Russian-Public-Opinion-Tracker/master/Data/vciom-presidential-approval-2006.csv",
-                       header = TRUE, stringsAsFactors = FALSE)
-colnames(vciom_data)[1] <- "Date"
-colnames(vciom_data)[2] <- "Approve"
-colnames(vciom_data)[3] <- "Disapprove"
-vciom_data$Date <- as.POSIXct(vciom_data$Date, format = "%m/%d/%Y", origin = "1899-12-30")
-vciom_data <- vciom_data %>% filter(.,Date > "2012-03-05")
-vciom_data$source <- "VTsIOM"
-
-# load fom data -------------------------------
-fom_data <- read.csv("https://raw.githubusercontent.com/biznesslanch/Russian-Public-Opinion-Tracker/master/Data/putin-approval-fom.csv", 
-                     header = TRUE, stringsAsFactors = FALSE)
-colnames(fom_data)[1] <- "Date"
-colnames(fom_data)[2] <- "Approve"
-colnames(fom_data)[3] <- "Disapprove"
-fom_data$Date <- as.POSIXct(fom_data$Date, format = "%m/%d/%Y", origin = "1899-12-30")
-fom_data <- fom_data %>% select(Date, Approve, Disapprove, source)
-
-# get data ready for merge ---------------------
-levada_data <- levada_data %>% select(Date, Approve, Disapprove) %>% filter(.,Date > "2012-03-05")
-levada_data$source <- "Levada"
+# remove No answer and hard to say from Levada and FOM data
+levada_data <- levada_data %>% select(-No.Answer)
+fom_data    <- fom_data %>% select(-hard_to_say)
 
 combined_data <- rbind(levada_data, vciom_data, fom_data)
 combined_data$date_num <- as.numeric(combined_data$Date)*1000

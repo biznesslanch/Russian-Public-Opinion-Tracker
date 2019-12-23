@@ -71,7 +71,6 @@ vtsiom_latest$Date <- vtsiom_latest$Date %>% gsub("Дек", "Dec", .) %>%
   gsub("Ноя", "Nov", .)
 vtsiom_latest <- vtsiom_latest %>% mutate(Date = mdy(Date)) %>% select(Date, Approve, Disapprove) %>% mutate(source = "VTsIOM")
 
-
 ## Bring in existing dataset
 vtsiom_main <- read_csv("https://raw.githubusercontent.com/biznesslanch/Russian-Public-Opinion-Tracker/master/Data/vciom-presidential-approval-2006.csv",
                         col_names = TRUE, 
