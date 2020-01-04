@@ -68,7 +68,7 @@ vtsiom_latest_dsprv <- vtsiom_latest_dsprv %>% pivot_longer(-Неодобрен�
 vtsiom_latest <- right_join(vtsiom_latest_apprv, vtsiom_latest_dsprv, by="Date") 
 # Reformulate dates - this has to be change manually
 vtsiom_latest$Date <- vtsiom_latest$Date %>% gsub("Дек", "Dec", .) %>% 
-  gsub("ÐÐ¾Ñ", "Nov", .)
+  gsub("Ноя", "Nov", .)
 vtsiom_latest <- vtsiom_latest %>% mutate(Date = mdy(Date)) %>% select(Date, Approve, Disapprove) %>% mutate(source = "VTsIOM")
 
 
