@@ -1,16 +1,19 @@
+Sys.setlocale("LC_CTYPE", "russian")
+
 # Load packages ----------------
 library(plotly)
 library(broom)
+library(devtools)
 
 # load Data ---------------
-source("https://raw.githubusercontent.com/biznesslanch/Russian-Public-Opinion-Tracker/master/Scripts/biznesslanch-putin_opinion-get_data.R",
+source_url("https://raw.githubusercontent.com/biznesslanch/Russian-Public-Opinion-Tracker/master/Scripts/biznesslanch-putin_opinion-get_data.R",
        encoding = "UTF-8")
 
 # remove No answer and hard to say from Levada and FOM data
 levada_data <- levada_data %>% select(-No.Answer)
 fom_data    <- fom_data %>% select(-hard_to_say)
 
-combined_data <- rbind(levada_data, vciom_data, fom_data)
+combined_data <- rbind(levada_data, vtsiom_data, fom_data)
 combined_data$date_num <- as.numeric(combined_data$Date)*1000
 
 # create shortcuts for plotly plot -------------------------

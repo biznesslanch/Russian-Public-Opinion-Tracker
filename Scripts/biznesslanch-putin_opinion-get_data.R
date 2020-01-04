@@ -68,15 +68,15 @@ vtsiom_latest_dsprv <- vtsiom_latest_dsprv %>% pivot_longer(-Неодобрен�
 vtsiom_latest <- right_join(vtsiom_latest_apprv, vtsiom_latest_dsprv, by="Date") 
 # Reformulate dates - this has to be change manually
 vtsiom_latest$Date <- vtsiom_latest$Date %>% gsub("Дек", "Dec", .) %>% 
-  gsub("Ноя", "Nov", .)
+  gsub("ÐÐ¾Ñ", "Nov", .)
 vtsiom_latest <- vtsiom_latest %>% mutate(Date = mdy(Date)) %>% select(Date, Approve, Disapprove) %>% mutate(source = "VTsIOM")
+
 
 ## Bring in existing dataset
 vtsiom_main <- read_csv("https://raw.githubusercontent.com/biznesslanch/Russian-Public-Opinion-Tracker/master/Data/vciom-presidential-approval-2006.csv",
                         col_names = TRUE, 
                         col_types = list(col_date(), col_double(), col_double(), col_character()))
-vtsiom_main <- vtsiom_main %>% mutate(Approve = round(Approve, 1),
-                                      Disapprove = round(Disapprove, 1))
+
 ## Check for duplicates 
 dplyr::setdiff(vtsiom_main, vtsiom_latest)
 
