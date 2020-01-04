@@ -6,6 +6,7 @@ library(broom)
 library(devtools)
 
 # load Data ---------------
+# Note: need to read in API key first (in separate script)
 source_url("https://raw.githubusercontent.com/biznesslanch/Russian-Public-Opinion-Tracker/master/Scripts/biznesslanch-putin_opinion-get_data.R",
        encoding = "UTF-8")
 
@@ -14,20 +15,22 @@ levada_data <- levada_data %>% select(-No.Answer)
 fom_data    <- fom_data %>% select(-hard_to_say)
 
 combined_data <- rbind(levada_data, vtsiom_data, fom_data)
+combined_data <- combined_data %>% filter(Date >= "2012-03-04")
+combined_data <- combined_data %>% mutate(Date = as.POSIXct(Date, tz="Europe/Moscow"))
 combined_data$date_num <- as.numeric(combined_data$Date)*1000
 
 # create shortcuts for plotly plot -------------------------
 m <- loess(Approve ~ date_num, span=0.1, data= combined_data)
 l <- loess(Disapprove ~ date_num, span=0.1, data= combined_data)
-tdy_date <- Sys.Date()
-tdy_date <- format(tdy_date, "%m/%d/%Y")
+tdy_date_dt <- Sys.Date()
+tdy_date <- format(tdy_date_dt, "%m/%d/%Y")
 update <- "Last updated:"
 update_cap <- paste(update, tdy_date, sep=" ")
 
 axy <- list(title="Approval/Disapproval", hoverformat=".1f")
-axx <-  list(title="", type= "date",
-             range=c(as.numeric(as.POSIXct("2012-03-05", format="%Y-%m-%d"))*1000,
-                     as.numeric(as.POSIXct(Sys.Date(), format="%Y-%m-%d"))*1000),
+axx <-  list(title="", type="date",
+             tickmode="array",
+             tickvalue = combined_data$Date,
              spikemode="across", spikecolor="black", spikethickness=1, spikedash="solid", spikesnap="cursor",
              rangeselector = list(
                buttons = list(
@@ -53,6 +56,8 @@ axx <-  list(title="", type= "date",
                    stepmode = "backward"),
                  list(step = "all"))),
              rangeslider=list(type="date", visible=TRUE, thickness=0.0))
+
+
 
 # plot -------------------------------------------------------------
 
