@@ -149,4 +149,3 @@ opinion_plot
 
 # note, this last line will not run w/o the API key
 api_create(opinion_plot, filename = "biznesslanch-ru_opinion-tracker-v1.1")
-
