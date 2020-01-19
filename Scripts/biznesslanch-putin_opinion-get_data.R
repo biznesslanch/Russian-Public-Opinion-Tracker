@@ -129,12 +129,6 @@ fom_main <- read_csv("https://raw.githubusercontent.com/biznesslanch/Russian-Pub
 fom_check <- dplyr::setdiff(fom_latest, fom_main) 
 fom_data  <- dplyr::union(fom_main, fom_latest)
 
-# get most recent date - will need to check manually that calculated date is correct 
-date_recent <- fom_data %>% slice(which.max(Date)) %>% select(Date) %>% mutate(Date = as.Date(Date), 
-                                                                               Date = Date + weeks(1)) %>% pull()
-
-fom_data <- fom_data %>% mutate_at("Date", ~ replace(., is.na(Date), date_recent)) %>% arrange(desc(Date))
-
 ## Save dataset
 write.csv(fom_data, file="putin-approval-fom.csv", row.names = FALSE)
 
