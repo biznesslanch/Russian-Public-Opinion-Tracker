@@ -114,7 +114,7 @@ fom_latest <- fom_latest %>% select(X1,X2) %>%
   pivot_longer(-X1) %>% filter(X1!="") %>% 
   pivot_wider(names_from = X1, values_from = value) %>% select(-name) %>%
   rename(Approve = Хорошо, Disapprove = Плохо, hard_to_say = "Затрудняюсь ответить") %>%
-  mutate(Date = as.Date(fom_date), source = "FOM",
+  mutate(Date = dmy(fom_date), source = "FOM",
          Approve = as.double(Approve),
          Disapprove = as.double(Disapprove),
          hard_to_say = as.double(hard_to_say),

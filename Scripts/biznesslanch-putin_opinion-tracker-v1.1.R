@@ -17,7 +17,7 @@ levada_data <- levada_data %>% select(-No.Answer)
 fom_data    <- fom_data %>% select(-hard_to_say)
 
 combined_data <- rbind(levada_data, vtsiom_data, fom_data)
-combined_data <- combined_data %>% filter(Date >= "2012-03-04")
+combined_data <- combined_data %>% filter(Date >= "2012-05-07")
 combined_data <- combined_data %>% mutate(Date = as.POSIXct(Date + 1, tz="GMT+3", origin="1970-01-01")) #add 1 day to Date to get correct dates
 combined_data$date_num <- as.numeric(combined_data$Date)*1000
 
