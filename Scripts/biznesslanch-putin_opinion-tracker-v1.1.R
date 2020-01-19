@@ -92,7 +92,7 @@ opinion_plot <- combined_data %>% na.omit() %>% plot_ly(., x= ~date_num, height 
               line=list(color="rgba(220,14,14,0.0)")) %>% 
   add_annotations(xref="paper",yref="paper", xanchor="left",
                   x=0.65,y=1.075,
-                  text="Putin Approval Rating<br><sup>From March 2012</sup><br>",
+                  text="Putin Approval Rating<br><sup>From May 2012</sup><br>",
                   showarrow=F, align="left",
                   font=list(size=26,family="Arial")) %>%
   add_annotations(xref="paper",yref="paper", xanchor="left",
