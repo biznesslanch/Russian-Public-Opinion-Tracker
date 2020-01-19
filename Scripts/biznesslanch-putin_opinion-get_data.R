@@ -9,7 +9,11 @@ library(tidyverse)
 library(stringr)
 library(rvest)
 library(lubridate)
-library(stringi)
+
+## create objects for Russian months - in correct case for dates used here
+ru_months <- c("января","февраля","марта","апреля","мая","июня","июля","августа","сентября","октября","ноября","декабря")
+ru_abbrev <- c("Янв","Февр","Март","Апр","Май","Июнь","Июль","Авг","Сент","Окт","Ноя","Дек")
+
 
 setwd(gitdatadir)
 ### Update Levada Data -----------------------
@@ -39,7 +43,7 @@ levada_main <- read_csv("https://raw.githubusercontent.com/biznesslanch/Russian-
                         col_types = list(col_date(), col_double(), col_double(), col_double(), col_character()))
 
 ## check for differences in records
-dplyr::setdiff(levada_new, levada_main)
+levada_check <- dplyr::setdiff(levada_new, levada_main)
 
 ## Append new value to existing dataset
 levada_data <- dplyr::union(levada_main, levada_new)
@@ -67,8 +71,8 @@ vtsiom_latest_dsprv <- vtsiom_latest_dsprv %>% pivot_longer(-Неодобрен�
 # join approval ratings 
 vtsiom_latest <- right_join(vtsiom_latest_apprv, vtsiom_latest_dsprv, by="Date") 
 # Reformulate dates - this has to be change manually
-vtsiom_latest$Date <- vtsiom_latest$Date %>% gsub("Дек", "Dec", .) %>% 
-  gsub("Ноя", "Nov", .)
+vtsiom_latest$Date <- vtsiom_latest$Date %>% mgsub::mgsub(.,c(ru_abbrev), c(month.abb))
+
 vtsiom_latest <- vtsiom_latest %>% mutate(Date = mdy(Date)) %>% select(Date, Approve, Disapprove) %>% mutate(source = "VTsIOM")
 
 
@@ -78,7 +82,8 @@ vtsiom_main <- read_csv("https://raw.githubusercontent.com/biznesslanch/Russian-
                         col_types = list(col_date(), col_double(), col_double(), col_character()))
 
 ## Check for duplicates 
-dplyr::setdiff(vtsiom_main, vtsiom_latest)
+## Check for duplicates 
+vtsiom_check <- dplyr::setdiff(vtsiom_latest, vtsiom_main)
 
 ## Append and save
 vtsiom_data <- dplyr::union(vtsiom_main, vtsiom_latest)
@@ -93,13 +98,23 @@ fom_url <- "https://fom.ru/Politika/10946"
 fom_pg  <- read_html(fom_url)  
 fom_tab <- html_table(fom_pg)
 
+## Regex for getting date as formatted in FOM block of text (not robust to other format than dd Month_Name YYYY)
+date_reg2 <- "([0-2]?[0-9]|3[01]) (января|февраля|марта|апреля|мая|июня|июля|августа|сентября|октября|ноября|декабря) [0-9]{4}"
+
+## get date
+date_text <- fom_pg %>% html_nodes(".chart-remark") %>% html_text 
+date_text <- date_text[5]
+fom_date <- regmatches(date_text, regexpr(date_reg2, date_text))
+# Translate Russian month to English
+fom_date <- mgsub::mgsub(fom_date,c(ru_months), c(month.name))
+
 ## Get table of latest approval rating
 fom_latest <- fom_tab[[6]]
 fom_latest <- fom_latest %>% select(X1,X2) %>%
   pivot_longer(-X1) %>% filter(X1!="") %>% 
   pivot_wider(names_from = X1, values_from = value) %>% select(-name) %>%
   rename(Approve = Хорошо, Disapprove = Плохо, hard_to_say = "Затрудняюсь ответить") %>%
-  mutate(Date = as.Date(NA), source = "FOM",
+  mutate(Date = as.Date(fom_date), source = "FOM",
          Approve = as.double(Approve),
          Disapprove = as.double(Disapprove),
          hard_to_say = as.double(hard_to_say),
@@ -111,8 +126,8 @@ fom_main <- read_csv("https://raw.githubusercontent.com/biznesslanch/Russian-Pub
                      col_types = list(col_date(), col_number(), col_number(), col_number(), col_character())) 
 
 ## Check for differences and join data
-dplyr::setdiff(fom_main, fom_latest) 
-fom_data <- dplyr::union(fom_main, fom_latest)
+fom_check <- dplyr::setdiff(fom_latest, fom_main) 
+fom_data  <- dplyr::union(fom_main, fom_latest)
 
 # get most recent date - will need to check manually that calculated date is correct 
 date_recent <- fom_data %>% slice(which.max(Date)) %>% select(Date) %>% mutate(Date = as.Date(Date), 
@@ -123,4 +138,4 @@ fom_data <- fom_data %>% mutate_at("Date", ~ replace(., is.na(Date), date_recent
 ## Save dataset
 write.csv(fom_data, file="putin-approval-fom.csv", row.names = FALSE)
 
-rm(fom_latest, fom_main, fom_tab, fom_pg, fom_url)
+rm(fom_latest, fom_main, fom_tab, fom_pg, fom_url, date_text, fom_date)
