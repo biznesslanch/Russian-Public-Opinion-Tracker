@@ -35,6 +35,7 @@ levada_new <- levada_new %>%
   mutate(Date = paste0(Date, ".15")) %>%
   mutate(Date = str_replace_all(Date, "\\.2(?=\\.)", ".2000")) %>%
   mutate(Date = str_replace_all(Date, "\\.201(?=\\.)", ".2010")) %>%
+  mutate(Date = str_replace_all(Date, "\\.202(?=\\.)", ".2020")) %>%
   mutate(Date = myd(Date))
 
 ## Append existing levada data
