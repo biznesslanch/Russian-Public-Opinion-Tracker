@@ -61,7 +61,7 @@ levada_list <- get_levadadata()
 
 if(is.null(levada_list)) {
   levada_down <- TRUE
-  levada_main <- read_csv("https://raw.githubusercontent.com/biznesslanch/Russian-Public-Opinion-Tracker/master/Data/putin-approval-levada-1999.csv",
+  levada_data <- read_csv("https://raw.githubusercontent.com/biznesslanch/Russian-Public-Opinion-Tracker/master/Data/putin-approval-levada-1999.csv",
                           col_names = TRUE, 
                           col_types = list(col_date(), col_double(), col_double(), col_double(), col_character()))
 } else {
@@ -115,7 +115,7 @@ vtsiom_list <- get_vtsiomdata()
 
 if(is.null(vtsiom_list)) {
   vtsiom_down <- TRUE
-  vtsiom_main <- read_csv("https://raw.githubusercontent.com/biznesslanch/Russian-Public-Opinion-Tracker/master/Data/vciom-presidential-approval-2006.csv",
+  vtsiom_data <- read_csv("https://raw.githubusercontent.com/biznesslanch/Russian-Public-Opinion-Tracker/master/Data/vciom-presidential-approval-2006.csv",
                           col_names = TRUE, 
                           col_types = list(col_date(), col_double(), col_double(), col_character()))
 } else {
@@ -174,7 +174,7 @@ fom_list <- get_fomdata()
 
 if(is.null(fom_list)) {
   fom_down <- TRUE
-  fom_main <- read_csv("https://raw.githubusercontent.com/biznesslanch/Russian-Public-Opinion-Tracker/master/Data/putin-approval-fom.csv",
+  fom_data <- read_csv("https://raw.githubusercontent.com/biznesslanch/Russian-Public-Opinion-Tracker/master/Data/putin-approval-fom.csv",
                        col_names  = TRUE, 
                        col_types = list(col_date(), col_number(), col_number(), col_number(), col_character())) 
 } else {
