@@ -56,13 +56,16 @@ get_levadadata <- function(url="https://www.levada.ru/indikatory/") {
 }
 
 levada_list <- get_levadadata()
-levada_data <- levada_list[[1]]
-levada_check <- levada_list[[2]]
 
-## save scraped data 
-write.csv(levada_data, file="putin-approval-levada-1999.csv", row.names = FALSE)
-
-rm(levada_list)
+if(is.null(levada_list)) {
+  levada_down <- is.null(levada_list)
+} else {
+  levada_data <- levada_list[[1]]
+  levada_check <- levada_list[[2]]
+  
+  write.csv(levada_data, file="putin-approval-fom.csv", row.names = FALSE)
+  rm(levada_list)
+}
 
 ### Update VTSiOM data ------------------
 get_vtsiomdata <- function(url="https://wciom.ru/news/ratings/odobrenie_deyatelnosti_gosudarstvennyx_institutov/") {
@@ -102,12 +105,16 @@ get_vtsiomdata <- function(url="https://wciom.ru/news/ratings/odobrenie_deyateln
 }
 
 vtsiom_list <- get_vtsiomdata()
-vtsiom_data <- vtsiom_list[[1]]
-vtsiom_check <- vtsiom_list[[2]]
 
-write.csv(vtsiom_data, file="vciom-presidential-approval-2006.csv", row.names = FALSE)
-
-rm(vtsiom_list)
+if(is.null(vtsiom_list)) {
+  vtsiom_down <- is.null(vtsiom_list)
+} else {
+  vtsiom_data <- vtsiom_list[[1]]
+  vtsiom_check <- vtsiom_list[[2]]
+  
+  write.csv(vtsiom_data, file="vciom-presidential-approval-2006.csv", row.names = FALSE)
+  rm(vtsiom_list)
+}
 
 ### Update FOM data ---------------
 get_fomdata <- function(url="https://fom.ru/Politika/10946") {
@@ -152,10 +159,12 @@ get_fomdata <- function(url="https://fom.ru/Politika/10946") {
   }
 }
 fom_list <- get_fomdata()
-fom_data <- fom_list[[1]]
-fom_check <- fom_list[[2]]
 
-## Save dataset
-write.csv(fom_data, file="putin-approval-fom.csv", row.names = FALSE)
-
-rm(fom_list)
+if(is.null(fom_list)) {
+  fom_down <- is.null(fom_list)
+} else {
+  fom_data <- fom_list[[1]]
+  fom_check <- fom_list[[2]]
+  
+  write.csv(fom_data, file="putin-approval-fom.csv", row.names = FALSE)
+  rm(fom_list)
