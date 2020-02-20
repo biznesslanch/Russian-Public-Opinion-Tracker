@@ -19,8 +19,10 @@ setwd(gitdatadir)
 ### Update Levada Data -----------------------
 get_levadadata <- function(url="https://www.levada.ru/indikatory/") {
   # get webpage status - TRUE means there's an http error. This stops the function. If False, then it pulls the data
-  url_live <- httr::http_error(url) 
-  if(url_live=="TRUE") {}
+  url_down <- httr::http_error(url) 
+  if(url_down=="TRUE") {
+    NULL
+  }
   else{
     lvurl <- url
     lvpg <- read_html(lvurl)
@@ -58,7 +60,7 @@ get_levadadata <- function(url="https://www.levada.ru/indikatory/") {
 levada_list <- get_levadadata()
 
 if(is.null(levada_list)) {
-  levada_down <- is.null(levada_list)
+  levada_down <- TRUE
 } else {
   levada_data <- levada_list[[1]]
   levada_check <- levada_list[[2]]
@@ -69,8 +71,10 @@ if(is.null(levada_list)) {
 
 ### Update VTSiOM data ------------------
 get_vtsiomdata <- function(url="https://wciom.ru/news/ratings/odobrenie_deyatelnosti_gosudarstvennyx_institutov/") {
-  url_live <- httr::http_error(url)
-  if (url_live=="TRUE"){url_live}
+  url_down <- httr::http_error(url)
+  if (url_down=="TRUE"){
+    NULL
+  }
   else{
     vtsiom_url <- url
     vtsiom_pg  <- read_html(vtsiom_url)  
@@ -107,7 +111,7 @@ get_vtsiomdata <- function(url="https://wciom.ru/news/ratings/odobrenie_deyateln
 vtsiom_list <- get_vtsiomdata()
 
 if(is.null(vtsiom_list)) {
-  vtsiom_down <- is.null(vtsiom_list)
+  vtsiom_down <- TRUE
 } else {
   vtsiom_data <- vtsiom_list[[1]]
   vtsiom_check <- vtsiom_list[[2]]
@@ -118,8 +122,10 @@ if(is.null(vtsiom_list)) {
 
 ### Update FOM data ---------------
 get_fomdata <- function(url="https://fom.ru/Politika/10946") {
-  url_live <- httr::http_error(url)
-  if (url_live=="TRUE"){url_live}
+  url_down <- httr::http_error(url)
+  if (url_down=="TRUE"){
+    NULL
+  }
   else {
     fom_url <- "https://fom.ru/Politika/10946"
     fom_pg  <- read_html(fom_url)  
@@ -161,7 +167,7 @@ get_fomdata <- function(url="https://fom.ru/Politika/10946") {
 fom_list <- get_fomdata()
 
 if(is.null(fom_list)) {
-  fom_down <- is.null(fom_list)
+  fom_down <- TRUE
 } else {
   fom_data <- fom_list[[1]]
   fom_check <- fom_list[[2]]
