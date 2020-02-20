@@ -168,3 +168,4 @@ if(is.null(fom_list)) {
   
   write.csv(fom_data, file="putin-approval-fom.csv", row.names = FALSE)
   rm(fom_list)
+}
