@@ -68,7 +68,7 @@ if(is.null(levada_list)) {
   levada_data <- levada_list[[1]]
   levada_check <- levada_list[[2]]
   
-  write.csv(levada_data, file="putin-approval-levada.csv", row.names = FALSE)
+  write.csv(levada_data, file="putin-approval-levada-1999.csv", row.names = FALSE)
   rm(levada_list)
 }
 
