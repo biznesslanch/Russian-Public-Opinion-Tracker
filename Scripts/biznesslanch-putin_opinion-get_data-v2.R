@@ -142,7 +142,7 @@ get_fomdata <- function(url="https://fom.ru/Politika/10946") {
     
     ## get date
     date_text <- fom_pg %>% html_nodes(".chart-remark") %>% html_text 
-    date_text <- date_text[5]
+    date_text <- date_text[7]
     fom_date <- regmatches(date_text, regexpr(date_reg2, date_text))
     # Translate Russian month to English
     fom_date <- mgsub::mgsub(fom_date,c(ru_months), c(month.name))
