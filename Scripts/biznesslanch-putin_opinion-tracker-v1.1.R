@@ -9,7 +9,7 @@ library(tidyverse)
 
 # load Data ---------------
 # Note: need to read in API key first (in separate script)
-source_url("https://raw.githubusercontent.com/biznesslanch/Russian-Public-Opinion-Tracker/master/Scripts/biznesslanch-putin_opinion-get_data-v2.R",
+source_url("https://raw.githubusercontent.com/biznesslanch/Russian-Public-Opinion-Tracker/master/Scripts/biznesslanch-putin_opinion-get_data-v3.R",
        encoding = "UTF-8")
 
 # remove No answer and hard to say from Levada and FOM data
