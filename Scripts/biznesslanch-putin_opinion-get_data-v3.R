@@ -10,6 +10,7 @@ library(tidyverse)
 library(stringr)
 library(rvest)
 library(lubridate)
+library(jsonlite)
 
 ## set defaults 
 ru_months <- c("января","февраля","марта","апреля","мая","июня","июля","августа","сентября","октября","ноября","декабря")
