@@ -68,15 +68,15 @@ opinion_plot <- combined_data %>% na.omit() %>% plot_ly(., x= ~date_num, height 
               color= I("red2"), alpha=0.4, showlegend=FALSE, hoverinfo="none",
               line=list(color="rgba(220,14,14,0.0)")) %>% 
   add_annotations(xref="paper",yref="paper", xanchor="left",
-                  x=0.65,y=1.075,
-                  text="Putin Approval Rating<br><sup>From May 2012</sup><br>",
+                  x=0.65,y=1.05,
+                  text=paste0("Putin Approval Rating<br><sup><i>",update_cap,"</i></sup>"),
                   showarrow=F, align="left",
                   font=list(size=26,family="Arial")) %>%
-  add_annotations(xref="paper",yref="paper", xanchor="left",
-                  x=0.65,y=0.97,
-                  text=update_cap,
-                  showarrow=F, align="left",
-                  font=list(size=12,family="Arial")) %>%
+  # add_annotations(xref="paper",yref="paper", xanchor="left",
+  #                 x=0.65,y=0.97,
+  #                 text=update_cap,
+  #                 showarrow=F, align="left",
+  #                 font=list(size=12,family="Arial")) %>%
   layout(xaxis=axx, autosize=F,
          yaxis=axy, 
          font=list(family="arial"),
@@ -86,45 +86,45 @@ opinion_plot <- combined_data %>% na.omit() %>% plot_ly(., x= ~date_num, height 
          hoverdistance=-1,
          annotations = list(
            list(xref = "paper", yref="paper", xanchor="middle", yanchor="middle",
-                x=0.325, y=1.025, showarrow=F, align="middle",
+                x=0.325, y=1.02, showarrow=F, align="middle",
                 text = "Key",
                 font = list(size=12, family="Arial", color="#404040")),
            
            list(xref = "paper", yref = "paper", xanchor = "left", yanchor = "middle",
-                x = 0.375, y = 1, showarrow = F, align = "left",
+                x = 0.375, y = 0.98, showarrow = F, align = "left",
                 text = "<b>Lower bound</b>",
                 font = list(size = 10, family = "Arial", color = "#404040")),
            
            list(xref = "paper", yref = "paper", xanchor = "left", yanchor = "middle",
-                x = 0.375, y = 1.04, showarrow = F, align = "left",
+                x = 0.375, y = 1.02, showarrow = F, align = "left",
                 text = "<b>Higher bound</b>",
                 font = list(size = 10, family = "Arial", color = "#404040")),
            
            list(xref = "paper", yref = "paper", xanchor = "left", yanchor = "middle",
-                x = 0.485, y = 1.02, showarrow = F, align = "left",
+                x = 0.485, y = 1, showarrow = F, align = "left",
                 text = "<b>Estimate</b>",
                 font = list(size = 10, family = "Arial", color = "#404040"))),
          shapes= list(
            list(type = "rectangle",
                 xref = "paper", yref = "paper",
-                x0 = 0.45, x1 = 0.48, y0 = 1, y1 = 1.04,
+                x0 = 0.45, x1 = 0.48, y0 = 0.98, y1 = 1.02,
                 fillcolor = "#d9d9d9",
                 line = list(width = 0)),
            
            list(type = "line",
                 xref = "paper", yref = "paper",
-                x0 = 0.45, x1 = 0.48, y0 = 1, y1 = 1,
-                line = list(width = 2, color = "#8c8c8c")),
-           
-           list(type = "line",
-                xref = "paper", yref = "paper",
-                x0 = 0.45, x1 = 0.48, y0 = 1.04, y1 = 1.04,
-                fillcolor = "#bfbfbf",
+                x0 = 0.45, x1 = 0.48, y0 = 0.98, y1 = 0.98,
                 line = list(width = 2, color = "#8c8c8c")),
            
            list(type = "line",
                 xref = "paper", yref = "paper",
                 x0 = 0.45, x1 = 0.48, y0 = 1.02, y1 = 1.02,
+                fillcolor = "#bfbfbf",
+                line = list(width = 2, color = "#8c8c8c")),
+           
+           list(type = "line",
+                xref = "paper", yref = "paper",
+                x0 = 0.45, x1 = 0.48, y0 = 1, y1 = 1,
                 fillcolor = "#bfbfbf",
                 line = list(width = 2, color = "#404040")))) %>%
   config(displayModeBar=F) %>%
